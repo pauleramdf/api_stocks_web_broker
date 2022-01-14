@@ -12,19 +12,18 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-    @CrossOrigin
-    @ComponentScan("com.user.repository")
-    class StocksRestController {
+@CrossOrigin
+@ComponentScan("com.user.repository")
+class StocksRestController {
 
-        @Autowired
-        private StocksRepository stocksRepository ;
+    @Autowired
+    private StocksRepository stocksRepository ;
 
-
-        @GetMapping("/stocks")
-        public List<Stocks> getStocks(Principal principal) {
-            return stocksRepository.findAll();
-        }
-
+    @GetMapping("/stocks")
+    public List<Stocks> getStocks() {
+        return stocksRepository.findAll();
     }
+
+}
 
 
