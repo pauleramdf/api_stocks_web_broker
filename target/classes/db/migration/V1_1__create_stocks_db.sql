@@ -3,10 +3,10 @@ create table IF NOT EXISTS stocks(
                                      market_cap bigint not null default 0,
                                      stock_symbol text not null,
                                      stock_name text not null,
-                                     ask_min numeric,
-                                     ask_max numeric,
-                                     bid_min numeric,
-                                     bid_max numeric,
+                                     ask_min numeric default 0,
+                                     ask_max numeric default 0,
+                                     bid_min numeric default 0,
+                                     bid_max numeric default 0,
                                      created_on timestamp not null default current_timestamp,
                                      updated_on timestamp not null default current_timestamp
 );

@@ -1,0 +1,8 @@
+okta:
+  idx:
+    issuer: "https://dev-8471287.okta.com/oauth2/default"
+    clientId: "0oa3jwwqxbdJngHNl5d7"
+    scopes:
+      - "openid"
+      - "profile"
+      - "email"

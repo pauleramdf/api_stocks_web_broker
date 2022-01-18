@@ -1,23 +1,24 @@
-package user.model;
+package stock.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name ="stocks")
-public class Stocks {
+public class Stocks implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String stock_symbol;
     private String stock_name;
-    private BigDecimal ask_min;
-    private BigDecimal ask_max;
-    private BigDecimal bid_min;
-    private BigDecimal bid_max;
+    private Double ask_min;
+    private Double ask_max;
+    private Double bid_min;
+    private Double bid_max;
     private Timestamp created_on;
     private Timestamp updated_on;
 
@@ -27,13 +28,16 @@ public class Stocks {
         this.updated_on = Timestamp.valueOf(LocalDateTime.now());
     }
 
-    public Stocks(String stock_symbol, String stock_name, BigDecimal ask_min, BigDecimal ask_max, BigDecimal bid_min, BigDecimal bid_max) {
+    public Stocks(Long id, String stock_symbol, String stock_name, Double ask_min, Double ask_max, Double bid_min, Double bid_max, Timestamp created_on, Timestamp updated_on) {
+        Id = id;
         this.stock_symbol = stock_symbol;
         this.stock_name = stock_name;
         this.ask_min = ask_min;
         this.ask_max = ask_max;
         this.bid_min = bid_min;
         this.bid_max = bid_max;
+        this.created_on = created_on;
+        this.updated_on = updated_on;
     }
 
     public Long getId() {
@@ -60,35 +64,35 @@ public class Stocks {
         this.stock_name = stock_name;
     }
 
-    public BigDecimal getAsk_min() {
+    public Double getAsk_min() {
         return ask_min;
     }
 
-    public void setAsk_min(BigDecimal ask_min) {
+    public void setAsk_min(Double ask_min) {
         this.ask_min = ask_min;
     }
 
-    public BigDecimal getAsk_max() {
+    public Double getAsk_max() {
         return ask_max;
     }
 
-    public void setAsk_max(BigDecimal ask_max) {
+    public void setAsk_max(Double ask_max) {
         this.ask_max = ask_max;
     }
 
-    public BigDecimal getBid_min() {
+    public Double getBid_min() {
         return bid_min;
     }
 
-    public void setBid_min(BigDecimal bid_min) {
+    public void setBid_min(Double bid_min) {
         this.bid_min = bid_min;
     }
 
-    public BigDecimal getBid_max() {
+    public Double getBid_max() {
         return bid_max;
     }
 
-    public void setBid_max(BigDecimal bid_max) {
+    public void setBid_max(Double bid_max) {
         this.bid_max = bid_max;
     }
 
