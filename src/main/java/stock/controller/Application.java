@@ -9,6 +9,7 @@ import stock.repository.StocksRepository;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -23,25 +24,25 @@ class StocksRestController {
         return stocksRepository.findAll();
     }
 
-    @GetMapping("/stocks/{name}")
+    @GetMapping("/stocks/name/{name}")
     public Stocks getStocksByName(@PathVariable(value="name") String stock_name) {
         return stocksRepository.findStocksByName(stock_name);
     }
 
+    @GetMapping("/stocks/id/{id}")
+    public Optional<Stocks> getStocksByName(@PathVariable(value="id") Long id) {
+        return stocksRepository.findById(id);
+    }
+
     @PostMapping("/stocks/sell")
     public void sellStocks(@Valid @RequestBody StockPricesDTO stockPrices) {
-        System.out.println("vamooooo");
-        System.out.println(stockPrices.getPrice());
         Stocks stock = stocksRepository.findById(stockPrices.getId()).orElseThrow(Error::new);
-        System.out.println(stock.getStock_name());
-        if (stock.getAsk_min() > stockPrices.getPrice()){
-            stock.setAsk_min(stockPrices.getPrice());
-            stocksRepository.save(stock);
-        }
-        if(stock.getAsk_max() < stockPrices.getPrice()){
-            stock.setAsk_max(stockPrices.getPrice());
-            stocksRepository.save(stock);
-        }
+
+        stock.setAsk_min(stockPrices.getMinPrice());
+        stocksRepository.save(stock);
+
+        stock.setAsk_max(stockPrices.getMaxPrice());
+        stocksRepository.save(stock);
     }
 
     @PostMapping("/stocks/buy")
@@ -49,17 +50,12 @@ class StocksRestController {
         System.out.println(stockPrices);
         Stocks stock = stocksRepository.findById(stockPrices.getId()).orElseThrow(Error::new);
 
+        stock.setBid_min(stockPrices.getMinPrice());
+        stocksRepository.save(stock);
 
-        if (stock.getBid_min() > stockPrices.getPrice()){
-            stock.setAsk_min(stockPrices.getPrice());
-            stocksRepository.save(stock);
-        }
-        if(stock.getBid_max() < stockPrices.getPrice()){
-            stock.setAsk_max(stockPrices.getPrice());
-            stocksRepository.save(stock);
-        }
+        stock.setBid_max(stockPrices.getMaxPrice());
+        stocksRepository.save(stock);
     }
-
 }
 
 
