@@ -1,0 +1,7 @@
+stock/model/Stocks.class
+stock/controller/StocksRestController.class
+stock/service/StocksService.class
+stock/dto/StockPricesDTO.class
+stock/repository/StocksRepository.class
+stock/Application.class
+stock/Application$SecurityConfiguration.class
