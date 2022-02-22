@@ -1,27 +1,17 @@
 package stock.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+import javax.validation.constraints.NotNull;
+
+@Data
 public class StockPricesDTO {
 
+    @NotNull
     private Long id_stock;
-    private Double askMin;
-    private Double askMax;
-    private Double bidMin;
-    private Double bidMax;
-
-
-    public StockPricesDTO(){};
-
-    public StockPricesDTO(Long id_stock, Double askMin, Double askMax, Double bidMin, Double bidMax) {
-        this.id_stock = id_stock;
-        this.askMin = askMin;
-        this.askMax = askMax;
-        this.bidMin = bidMin;
-        this.bidMax = bidMax;
-    }
+    private Double ask_min;
+    private Double ask_max;
+    private Double bid_min;
+    private Double bid_max;
 }
 
