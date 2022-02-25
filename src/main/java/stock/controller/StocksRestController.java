@@ -6,16 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import stock.dto.StockPricesDTO;
+import stock.dto.StockPricesDto;
 import stock.model.Stocks;
 import stock.service.StocksService;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @RestController
 @CrossOrigin
@@ -46,7 +43,7 @@ class StocksRestController {
     }
 
     @PostMapping("/stocks/askbid")
-    public ResponseEntity<?> buyStocks(@Valid @RequestBody StockPricesDTO stockPrices) {
+    public ResponseEntity<?> buyStocks(@Valid @RequestBody StockPricesDto stockPrices) {
         Stocks stock = stocksService.askBid(stockPrices);
         return new ResponseEntity<>(stock, HttpStatus.OK);
 
@@ -56,12 +53,16 @@ class StocksRestController {
     public SseEmitter handle(HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
 
-        SseEmitter emitter = new SseEmitter(180_000L);
+        SseEmitter emitter = new SseEmitter();
 
         this.stocksService.addEmitter(emitter);
 
         return emitter;
     }
 
+    @GetMapping("/stocks/historic/{id}")
+    public ResponseEntity<?> getStockHistoricPrices(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<>(stocksService.getStockHistoricPrices(id), HttpStatus.OK);
+    }
 }
 

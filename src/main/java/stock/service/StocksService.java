@@ -3,8 +3,11 @@ package stock.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import stock.dto.StockPricesDTO;
+import stock.dto.StockPricesDto;
+import stock.dto.StocksHistoricPricesDto;
 import stock.model.Stocks;
+import stock.model.StocksHistoricPrices;
+import stock.repository.StocksHistoricPricesRepository;
 import stock.repository.StocksRepository;
 
 import java.util.List;
@@ -15,7 +18,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Service("stocksService")
 public class StocksService {
     @Autowired
-    private StocksRepository stocksRepository ;
+    private StocksRepository stocksRepository;
+
+    @Autowired
+    private StocksHistoricPricesRepository historicPricesRepository;
 
     private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
@@ -35,16 +41,19 @@ public class StocksService {
         return stocksRepository.findAll();
     }
 
-    public Stocks askBid(StockPricesDTO stockPrices) {
+    public Stocks askBid(StockPricesDto stockPrices) {
         Stocks stock = findById(stockPrices.getId_stock()).orElseThrow(Error::new);
-        if (stockPrices.getBid_max() != null) {
+        if (stockPrices.getBid_max() != null && stockPrices.getBid_min() != null) {
             stock.setBid_min(stockPrices.getBid_min());
             stock.setBid_max(stockPrices.getBid_max());
         }
-        if (stockPrices.getAsk_min() != null) {
+        if (stockPrices.getAsk_min() != null && stockPrices.getAsk_max() != null) {
             stock.setAsk_min(stockPrices.getAsk_min());
             stock.setAsk_max(stockPrices.getAsk_max());
         }
+
+        StocksHistoricPrices historic = new StocksHistoricPrices(stock);
+        historicPricesRepository.save(historic);
 
         stock = save(stock);
         publish();
@@ -75,5 +84,9 @@ public class StocksService {
             }
         }
 
+    }
+
+    public List<StocksHistoricPricesDto> getStockHistoricPrices(Long id) {
+       return historicPricesRepository.findAllByTimeInterval(id);
     }
 }

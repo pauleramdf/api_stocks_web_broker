@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class StockPricesDTO {
+public class StockPricesDto {
 
     @NotNull
     private Long id_stock;
