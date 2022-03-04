@@ -1,6 +1,8 @@
 package stock.dto;
 
 import lombok.*;
+import stock.model.Stocks;
+import stock.model.StocksHistoricPrices;
 
 import java.util.Date;
 import java.sql.Timestamp;
@@ -16,12 +18,12 @@ public class StocksHistoricPricesDto {
     private Double low;
     private Date createdOn;
 
-//    public StocksHistoricPricesDto(Long id_stock, Double open, Double close, Double high, Double low, Timestamp created_on) {
-//        this.id_stock = id_stock;
-//        this.open = open;
-//        this.close = close;
-//        this.high = high;
-//        this.low = low;
-//        this.created_on = created_on;
-//    }
+public StocksHistoricPricesDto (StocksHistoricPrices historic){
+    this.idStock = historic.getStock().getId();
+    this.open = historic.getOpen();
+    this.close = historic.getClose();
+    this.high = historic.getHigh();
+    this.low = historic.getLow();
+    this.createdOn = historic.getCreated_on();
+}
 }

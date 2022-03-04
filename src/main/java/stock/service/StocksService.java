@@ -10,6 +10,8 @@ import stock.model.StocksHistoricPrices;
 import stock.repository.StocksHistoricPricesRepository;
 import stock.repository.StocksRepository;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -52,20 +54,40 @@ public class StocksService {
             stock.setAsk_max(stockPrices.getAsk_max());
         }
 
-        StocksHistoricPrices historic = new StocksHistoricPrices(stock);
-        historicPricesRepository.save(historic);
 
         stock = save(stock);
+        atualizaPrices(stock.getId(), stock);
         publish();
 
         return stock;
+    }
+
+    private void atualizaPrices(Long id_stock, Stocks stocks) {
+        Date date = new Date();
+        Optional<StocksHistoricPrices> historic2 = historicPricesRepository.findByIdAndDate(id_stock, new Timestamp(date.getTime()));
+
+        if(historic2.isPresent()) {
+            if (historic2.get().getHigh() < stocks.getAsk_min()) {
+                historic2.get().setHigh(stocks.getAsk_min());
+            }
+            if (historic2.get().getLow() > stocks.getAsk_min()) {
+                historic2.get().setLow(stocks.getAsk_min());
+            }
+            historic2.get().setClose(stocks.getAsk_min());
+            historicPricesRepository.save(historic2.get());
+        }
+        else{
+            historicPricesRepository.save(new StocksHistoricPrices(stocks));
+        }
     }
 
     public void addEmitter(SseEmitter emitter) {
         this.emitters.add(emitter);
 
         emitter.onCompletion(() -> this.emitters.remove(emitter));
-        emitter.onTimeout(() -> this.emitters.remove(emitter));
+        emitter.onTimeout(() -> {
+            emitter.complete();
+            this.emitters.remove(emitter);});
     }
 
     public void publish() {
@@ -87,6 +109,6 @@ public class StocksService {
     }
 
     public List<StocksHistoricPricesDto> getStockHistoricPrices(Long id) {
-       return historicPricesRepository.findAllByTimeInterval(id);
+        return historicPricesRepository.findAll().stream().map((StocksHistoricPrices e) -> new StocksHistoricPricesDto(e)).toList();
     }
 }
