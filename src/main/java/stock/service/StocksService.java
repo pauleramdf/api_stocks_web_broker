@@ -66,19 +66,22 @@ public class StocksService {
         Date date = new Date();
         Optional<StocksHistoricPrices> historic2 = historicPricesRepository.findByIdAndDate(id_stock, new Timestamp(date.getTime()));
 
-        if(historic2.isPresent()) {
-            if (historic2.get().getHigh() < stocks.getAsk_min()) {
-                historic2.get().setHigh(stocks.getAsk_min());
+        if(stocks.getAsk_min() != 0){
+            if(historic2.isPresent() ) {
+                if (historic2.get().getHigh() < stocks.getAsk_min()) {
+                    historic2.get().setHigh(stocks.getAsk_min());
+                }
+                if (historic2.get().getLow() > stocks.getAsk_min()) {
+                    historic2.get().setLow(stocks.getAsk_min());
+                }
+                historic2.get().setClose(stocks.getAsk_min());
+                historicPricesRepository.save(historic2.get());
             }
-            if (historic2.get().getLow() > stocks.getAsk_min()) {
-                historic2.get().setLow(stocks.getAsk_min());
+            else{
+                historicPricesRepository.save(new StocksHistoricPrices(stocks));
             }
-            historic2.get().setClose(stocks.getAsk_min());
-            historicPricesRepository.save(historic2.get());
         }
-        else{
-            historicPricesRepository.save(new StocksHistoricPrices(stocks));
-        }
+
     }
 
     public void addEmitter(SseEmitter emitter) {
@@ -109,6 +112,6 @@ public class StocksService {
     }
 
     public List<StocksHistoricPricesDto> getStockHistoricPrices(Long id) {
-        return historicPricesRepository.findAll().stream().map((StocksHistoricPrices e) -> new StocksHistoricPricesDto(e)).toList();
+        return historicPricesRepository.findAllByIdStock(id).stream().map((StocksHistoricPrices e) -> new StocksHistoricPricesDto(e)).toList();
     }
 }
