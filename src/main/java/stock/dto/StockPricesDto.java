@@ -1,17 +1,17 @@
 package stock.dto;
 
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
+import lombok.ToString;
 
 @Data
+@ToString
 public class StockPricesDto {
 
-    @NotNull
-    private Long id_stock;
-    private Double ask_min;
-    private Double ask_max;
-    private Double bid_min;
-    private Double bid_max;
+    private Long idStock;
+    private Double askMin;
+    private Double askMax;
+    private Double bidMin;
+    private Double bidMax;
+
 }
 

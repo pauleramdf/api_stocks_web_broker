@@ -17,7 +17,7 @@ import java.util.Date;
 public class StocksHistoricPrices {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     @ManyToOne
     @JoinColumn(name="id_stock")
     private Stocks stock;
@@ -27,21 +27,15 @@ public class StocksHistoricPrices {
     private Double low;
     @CreationTimestamp
     @Column(name = "created_on")
-    private Timestamp created_on;
+    private Timestamp created;
 
     public StocksHistoricPrices(Stocks stocks){
         Date date = new Date();
-        this.setOpen(stocks.getAsk_min());
-        this.setClose(stocks.getAsk_min());
-        this.setHigh(stocks.getAsk_min());
-        this.setLow(stocks.getAsk_min());
+        this.setOpen(stocks.getAskMin());
+        this.setClose(stocks.getAskMin());
+        this.setHigh(stocks.getAskMin());
+        this.setLow(stocks.getAskMin());
         this.setStock(stocks);
-        this.setCreated_on(new Timestamp(date.getTime()));
-
+        this.setCreated(new Timestamp(date.getTime()));
     }
-    @PrePersist
-    public void func(){
-        //faz alguma coisa
-    }
-
 }

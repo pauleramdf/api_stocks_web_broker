@@ -1,6 +1,6 @@
 package stock.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import stock.dto.StockPricesDto;
@@ -16,14 +16,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
+@RequiredArgsConstructor
 @Service("stocksService")
 public class StocksService {
-    @Autowired
-    private StocksRepository stocksRepository;
+    private final StocksRepository stocksRepository;
 
-    @Autowired
-    private StocksHistoricPricesRepository historicPricesRepository;
+    private final StocksHistoricPricesRepository historicPricesRepository;
 
     private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
@@ -35,25 +33,38 @@ public class StocksService {
         return stocksRepository.save(stock);
     }
 
-    public Stocks findStocksByName(String stock_name) {
-        return stocksRepository.findStocksByName(stock_name);
+    public Stocks findStocksByName(String stockName) {
+        return stocksRepository.findStocksByName(stockName);
     }
 
     public List<Stocks> findAll() {
-        return stocksRepository.findAll();
+        List<Stocks> ordenada = stocksRepository.findAll();
+        ordenada.sort(this::ordena);
+        return ordenada ;
+    }
+
+    private int ordena(Stocks o1, Stocks o2){
+        if(o1.getId() < o2.getId()){
+            return -1;
+        }
+        else{
+            if(o1.getId().equals(o2.getId()))
+                return 0;
+            else
+                return 1;
+        }
     }
 
     public Stocks askBid(StockPricesDto stockPrices) {
-        Stocks stock = findById(stockPrices.getId_stock()).orElseThrow(Error::new);
-        if (stockPrices.getBid_max() != null && stockPrices.getBid_min() != null) {
-            stock.setBid_min(stockPrices.getBid_min());
-            stock.setBid_max(stockPrices.getBid_max());
+        Stocks stock = findById(stockPrices.getIdStock()).orElseThrow(Error::new);
+        if (stockPrices.getBidMax() != null && stockPrices.getBidMin() != null) {
+            stock.setBidMin(stockPrices.getBidMin());
+            stock.setBidMax(stockPrices.getBidMax());
         }
-        if (stockPrices.getAsk_min() != null && stockPrices.getAsk_max() != null) {
-            stock.setAsk_min(stockPrices.getAsk_min());
-            stock.setAsk_max(stockPrices.getAsk_max());
+        if (stockPrices.getAskMin() != null && stockPrices.getAskMax() != null) {
+            stock.setAskMin(stockPrices.getAskMin());
+            stock.setAskMax(stockPrices.getAskMax());
         }
-
 
         stock = save(stock);
         atualizaPrices(stock.getId(), stock);
@@ -62,26 +73,25 @@ public class StocksService {
         return stock;
     }
 
-    private void atualizaPrices(Long id_stock, Stocks stocks) {
+    private void atualizaPrices(Long idStock, Stocks stocks) {
         Date date = new Date();
-        Optional<StocksHistoricPrices> historic2 = historicPricesRepository.findByIdAndDate(id_stock, new Timestamp(date.getTime()));
+        Optional<StocksHistoricPrices> historic2 = historicPricesRepository.findByIdAndDate(idStock, new Timestamp(date.getTime()));
 
-        if(stocks.getAsk_min() != 0){
+        if(stocks.getAskMin() != 0){
             if(historic2.isPresent() ) {
-                if (historic2.get().getHigh() < stocks.getAsk_min()) {
-                    historic2.get().setHigh(stocks.getAsk_min());
+                if (historic2.get().getHigh() < stocks.getAskMin()) {
+                    historic2.get().setHigh(stocks.getAskMin());
                 }
-                if (historic2.get().getLow() > stocks.getAsk_min()) {
-                    historic2.get().setLow(stocks.getAsk_min());
+                if (historic2.get().getLow() > stocks.getAskMin()) {
+                    historic2.get().setLow(stocks.getAskMin());
                 }
-                historic2.get().setClose(stocks.getAsk_min());
+                historic2.get().setClose(stocks.getAskMin());
                 historicPricesRepository.save(historic2.get());
             }
             else{
                 historicPricesRepository.save(new StocksHistoricPrices(stocks));
             }
         }
-
     }
 
     public void addEmitter(SseEmitter emitter) {
@@ -94,24 +104,20 @@ public class StocksService {
     }
 
     public void publish() {
-
         for (SseEmitter listenner :
                 emitters) {
             try {
                 List<Stocks> ordenada = findAll();
-                ordenada.sort((o1, o2) -> {
-                    return o1.getId() < o2.getId() ? -1 : (o1.getId() == o2.getId()) ? 0 : 1;
-                });
+                ordenada.sort(this::ordena);
                 listenner.send(ordenada);
 
             } catch (Exception ex) {
                 listenner.completeWithError(ex);
             }
         }
-
     }
 
     public List<StocksHistoricPricesDto> getStockHistoricPrices(Long id) {
-        return historicPricesRepository.findAllByIdStock(id).stream().map((StocksHistoricPrices e) -> new StocksHistoricPricesDto(e)).toList();
+        return historicPricesRepository.findAllByIdStock(id).stream().map( StocksHistoricPricesDto::new).toList();
     }
 }

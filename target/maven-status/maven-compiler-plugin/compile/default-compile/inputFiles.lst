@@ -1,6 +1,9 @@
 /home/paulo-fernandes/Documents/github/desafio-microservicos/stocks_api/src/main/java/stock/service/StocksService.java
 /home/paulo-fernandes/Documents/github/desafio-microservicos/stocks_api/src/main/java/stock/model/Stocks.java
+/home/paulo-fernandes/Documents/github/desafio-microservicos/stocks_api/src/main/java/stock/dto/StocksHistoricPricesDto.java
 /home/paulo-fernandes/Documents/github/desafio-microservicos/stocks_api/src/main/java/stock/Application.java
-/home/paulo-fernandes/Documents/github/desafio-microservicos/stocks_api/src/main/java/stock/dto/StockPricesDTO.java
 /home/paulo-fernandes/Documents/github/desafio-microservicos/stocks_api/src/main/java/stock/repository/StocksRepository.java
+/home/paulo-fernandes/Documents/github/desafio-microservicos/stocks_api/src/main/java/stock/dto/StockPricesDto.java
 /home/paulo-fernandes/Documents/github/desafio-microservicos/stocks_api/src/main/java/stock/controller/StocksRestController.java
+/home/paulo-fernandes/Documents/github/desafio-microservicos/stocks_api/src/main/java/stock/model/StocksHistoricPrices.java
+/home/paulo-fernandes/Documents/github/desafio-microservicos/stocks_api/src/main/java/stock/repository/StocksHistoricPricesRepository.java

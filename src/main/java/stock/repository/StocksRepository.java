@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface StocksRepository extends JpaRepository<Stocks, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM Stocks s where s.stock_name = :stock_name")
-    Stocks findStocksByName(@Param("stock_name") String stock_name);
+    Stocks findStocksByName(@Param("stock_name") String stockName);
 }

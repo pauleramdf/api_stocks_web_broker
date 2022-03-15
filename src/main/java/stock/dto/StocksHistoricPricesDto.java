@@ -1,11 +1,9 @@
 package stock.dto;
 
 import lombok.*;
-import stock.model.Stocks;
 import stock.model.StocksHistoricPrices;
 
 import java.util.Date;
-import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +22,6 @@ public StocksHistoricPricesDto (StocksHistoricPrices historic){
     this.close = historic.getClose();
     this.high = historic.getHigh();
     this.low = historic.getLow();
-    this.createdOn = historic.getCreated_on();
+    this.createdOn = historic.getCreated();
 }
 }
