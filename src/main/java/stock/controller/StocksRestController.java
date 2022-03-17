@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:8082"})
 @RequiredArgsConstructor
 class StocksRestController {
 
