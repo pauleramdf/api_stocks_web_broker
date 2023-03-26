@@ -16,25 +16,25 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:8082"})
 @RequiredArgsConstructor
+@RequestMapping("/stocks")
 class StocksRestController {
 
     private final StocksService stocksService;
 
-    @GetMapping("/stocks")
+    @GetMapping()
     public ResponseEntity<List<Stocks>> getStocks() {
         List<Stocks> ordenada = stocksService.findAll();
 
         return new ResponseEntity<>(ordenada, HttpStatus.OK);
     }
 
-    @GetMapping("/stocks/name/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<Stocks> getStocksByName(@PathVariable(value = "name") String stockName) {
         return new ResponseEntity<>(stocksService.findStocksByName(stockName), HttpStatus.OK);
     }
 
-    @GetMapping("/stocks/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Stocks> getStocksByName(@PathVariable(value = "id") Long id) {
         Optional<Stocks> stock  = stocksService.findById(id);
         if(stock.isPresent())
@@ -43,14 +43,14 @@ class StocksRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/stocks/askbid")
+    @PostMapping("/askbid")
     public ResponseEntity<Stocks> updateStocks(@Valid @RequestBody StockPricesDto stockPrices) {
         Stocks stock = stocksService.askBid(stockPrices);
         return new ResponseEntity<>(stock, HttpStatus.OK);
 
     }
 
-    @GetMapping("/stocks/live")
+    @GetMapping("/live")
     public SseEmitter handle(HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
 
@@ -61,7 +61,7 @@ class StocksRestController {
         return emitter;
     }
 
-    @GetMapping("/stocks/historic/{id}")
+    @GetMapping("/historic/{id}")
     public ResponseEntity<List<StocksHistoricPricesDto>> getStockHistoricPrices(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<>(stocksService.getStockHistoricPrices(id), HttpStatus.OK);
     }

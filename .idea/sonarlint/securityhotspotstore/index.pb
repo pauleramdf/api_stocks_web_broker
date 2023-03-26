@@ -1,14 +1,12 @@
 
-[
-+src/main/java/stock/dto/StockPricesDto.java,a/a/aa8e0c7f26a392f985aa5b5b4bc637c5802a8cfa
 9
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-c
-3src/main/java/stock/model/StocksHistoricPrices.java,e\3\e3eaec1fc6dc2e4b19c76cc51a2c587b68766366
 U
 %src/main/java/stock/model/Stocks.java,e\b\eb2b50bb54414ffe22c1b00d65d70fe3e976cdf0
+c
+3src/main/java/stock/model/StocksHistoricPrices.java,e\3\e3eaec1fc6dc2e4b19c76cc51a2c587b68766366
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 d
 4src/main/java/stock/repository/StocksRepository.java,d\e\de1078f52c6571c28329e14db5c2947e1af77200
 r

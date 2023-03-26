@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    username: postgres
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/stocks}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+  flyway:
+    baselineOnMigrate: 'true'
+server:
+  port: '8083'
+
