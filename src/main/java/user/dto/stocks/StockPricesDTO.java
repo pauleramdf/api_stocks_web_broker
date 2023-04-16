@@ -1,11 +1,11 @@
-package stock.dto;
+package user.dto.stocks;
 
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
-public class StockPricesDto {
+public class StockPricesDTO{
 
     private Long idStock;
     private Double askMin;
@@ -14,4 +14,3 @@ public class StockPricesDto {
     private Double bidMax;
 
 }
-

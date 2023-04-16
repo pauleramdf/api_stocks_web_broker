@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import stock.dto.StockPricesDto;
 import stock.dto.StocksHistoricPricesDto;
 import stock.model.Stocks;
 import stock.service.StocksService;
+import user.dto.stocks.StockPricesDTO;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -44,7 +44,7 @@ class StocksRestController {
     }
 
     @PostMapping("/askbid")
-    public ResponseEntity<Stocks> updateStocks(@Valid @RequestBody StockPricesDto stockPrices) {
+    public ResponseEntity<Stocks> updateStocks(@Valid @RequestBody StockPricesDTO stockPrices) {
         Stocks stock = stocksService.askBid(stockPrices);
         return new ResponseEntity<>(stock, HttpStatus.OK);
 

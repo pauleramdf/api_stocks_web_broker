@@ -3,12 +3,12 @@ package stock.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import stock.dto.StockPricesDto;
 import stock.dto.StocksHistoricPricesDto;
 import stock.model.Stocks;
 import stock.model.StocksHistoricPrices;
 import stock.repository.StocksHistoricPricesRepository;
 import stock.repository.StocksRepository;
+import user.dto.stocks.StockPricesDTO;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -55,7 +55,7 @@ public class StocksService {
         }
     }
 
-    public Stocks askBid(StockPricesDto stockPrices) {
+    public Stocks askBid(StockPricesDTO stockPrices) {
         Stocks stock = findById(stockPrices.getIdStock()).orElseThrow(Error::new);
         if (stockPrices.getBidMax() != null && stockPrices.getBidMin() != null) {
             stock.setBidMin(stockPrices.getBidMin());
