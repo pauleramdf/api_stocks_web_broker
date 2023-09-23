@@ -16,7 +16,7 @@ public class KafkaService {
     private final StocksService stocksService;
 
     @KafkaListener(topics = "stocks", groupId = "GROUP-1", containerFactory = "kafkaListenerStockPricesFactory")
-    public void listenWithHeaders(StockPricesDTO stockPricesDto, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
+    public void listenWithHeaders(StockPricesDTO stockPricesDto, @Header(KafkaHeaders.PARTITION) int partition) {
         log.info( "Received Message: " + stockPricesDto + "from partition: " + partition);
         stocksService.askBid(stockPricesDto);
     }

@@ -10,8 +10,8 @@ import stock.model.Stocks;
 import stock.service.StocksService;
 import user.dto.stocks.StockPricesDTO;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 

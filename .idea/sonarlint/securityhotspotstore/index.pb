@@ -1,23 +1,7 @@
 
 9
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-U
-%src/main/java/stock/model/Stocks.java,e\b\eb2b50bb54414ffe22c1b00d65d70fe3e976cdf0
-c
-3src/main/java/stock/model/StocksHistoricPrices.java,e\3\e3eaec1fc6dc2e4b19c76cc51a2c587b68766366
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-d
-4src/main/java/stock/repository/StocksRepository.java,d\e\de1078f52c6571c28329e14db5c2947e1af77200
-r
-Bsrc/main/java/stock/repository/StocksHistoricPricesRepository.java,0\1\01255ee07fbde8cafadf1915781f2ce894fa78cb
-]
--src/main/java/stock/config/RequestFilter.java,9\6\961fc3eee2acd2ab9a71988fae25832de9e923a2
-^
-.src/main/java/stock/service/StocksService.java,f\7\f7ca72bbcf361f71c7a788b35a9ea09d86404f98
 T
 $src/main/java/stock/Application.java,b\8\b88827c93b68ea431049aa1356792406133285c8
-h
-8src/main/java/stock/controller/StocksRestController.java,c\f\cfc7d38c29907982853d6cc462a211c4baeeb271
 a
 1src/main/java/stock/config/CorsConfiguration.java,0\4\04ea2092f6cc2b486782d4124806c46c119a46bd
